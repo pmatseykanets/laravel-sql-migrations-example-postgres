@@ -19,9 +19,9 @@ dist: trusty
 sudo: required
 
 before_install:
-  - psql -U postgres -c "create database homestead"
-  - psql -U postgres -c "create user homestead password 'secret'"
-  - psql -U postgres -c "grant all on database homestead to homestead"
+  - psql -h localhost -U postgres -c "create database homestead"
+  - psql -h localhost -U postgres -c "create user homestead password 'secret'"
+  - psql -h localhost -U postgres -c "grant all on database homestead to homestead"
 
 install: travis_retry composer install --no-interaction --prefer-source
 
