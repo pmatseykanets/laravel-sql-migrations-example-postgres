@@ -1,0 +1,36 @@
+language: php
+
+php: 7.2
+
+services: postgresql
+
+addons:
+  apt:
+    packages:
+      - postgresql-10
+      - postgresql-client-10
+  postgresql: 10
+
+env:
+  global:
+    - PGPORT=5433
+
+dist: trusty
+sudo: required
+
+before_install:
+  - psql -u postgres -c "create database homestead"
+  - psql -u postgres -c "create user homestead password 'secret'"
+  - psql -u postgres -c "grant all on database homestead to homestead"
+
+install: travis_retry composer install --no-interaction --prefer-source
+
+before_script:
+  - cp .env.example .env
+  - php artisan key:generate
+  
+script: php artisan migrate
+
+cache:
+  directories:
+  - $HOME/.composer/cache
